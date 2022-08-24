@@ -12,11 +12,9 @@ blob_size = 320
 confidence_threshold = 0.5
 nms_threshold = 0.3
 with open(obj_file ,"rt")as f:
-    #"rt": r yani to halat read , t yani dar halat text bekon agar b bezarim yan halat binery
+  
     obj_classes = f.read().rstrip("\n").split("\n")
-#rstrip: momken hast dar enteha file text chand khat khali ijad shdeh bashe ke miyad on ha ro pak mikoneh
-#split : be tor pishfarz kalamar ro ba space joda mikoneh val ma inja farz ro \n garar dadim
-#make darknet
+
 net = cv2.dnn.readNetFromDarknet(net_config,net_weights)
 #AMADEH SAZI SAKHTAFZAR LAZEM
 net.setPreferableBackend(cv2.dnn.DNN_BACKEND_OPENCV)
@@ -56,18 +54,14 @@ def findobjects(output, img):
                     (x-70,y),cv2.FONT_HERSHEY_SIMPLEX, 0.6, (0,0,255), 2)
 
 frame= cv2.imread("test.jpg")
-    #scalefactor = baraye normalize kardan estefadeh mishe va chon tasviremon rangi bod va mikhahim normalize konim omadim az 1/255 estefadej kardim
 blob = cv2.dnn.blobFromImage(frame , scalefactor = 1/255, size=(blob_size, blob_size), mean =(0,0,0),
                             swapRB = True, crop = False)
     
-#mean = mean subtraction , baraye inke tanzimat roshnayee tasvir dorost beshe dar bazi az data seyt ha mannad image net miayan va baraye r,g,b har kodam yek megdar moshakhas mikonan ke beyad az lenhv anha kam konad
-#swapRGB= dar opencv tasavier be format bgr hast va agar garag basha mean kam shavad pas bayad in tabdil sorat girad ta eshtebah mafgadir az ham kam nashavand
-#crop = agar crop true bashad va size tasv ir ma ba size tasvir corodi ke moshakhas kardim bozrgtar bashad crop miayad va be haman andazeh az tasvireman boresh midahad ama agar false bashad khodam yek kari mikonad , tabdil size ra anjam midahad
 
 net.setInput(blob)
-    #adress on 3ta layeh khoroji ro peyda mikonim
+  
 out_names = net.getUnconnectedOutLayersNames()
-    #hala migim ke beya on  3 ta adress ro begir va bro beszesh
+    
 output = net.forward(out_names)
 findobjects(output, frame)
 #plt.rcParams['figure.figsize'] = (10,10)
